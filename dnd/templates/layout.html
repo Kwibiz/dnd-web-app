@@ -26,8 +26,17 @@
         {% endblock body%}
     </div>
 
-    <div class="dice">
-        Roll
+    <div class="dice" id="dice">
+        d20
+
+        <script>
+            const diceElement = document.getElementById('dice');
+
+            diceElement.addEventListener('click', () => {
+                const result = Math.floor(Math.random() * 6) + 1;
+                diceElement.innerText = result;
+            });
+        </script>
     </div>
 </body>
 </html>
