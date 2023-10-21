@@ -1,21 +1,40 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout 
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
-@login_required(login_url='login')
+@login_required(login_url='users:login')
 def users_main(request):
     user = request.user.username
     return render(request, 'users/users_main.html', context={'user': user})
 
 
+def sign_up(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
+            login(request, user)
+
+            return redirect('users:users_main')
+    
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'users/sign_up.html', context={'form': form,})
+
+
 class LogoutUserView(LogoutView):
-    next_page = 'users_main'
+    next_page = 'users:users_main'
     
 
 class LoginUserView(LoginView):
     template_name = 'users/login.html'
-    next_page = 'users_main'
+    next_page = 'users:users_main'
     redirect_authenticated_user = True
