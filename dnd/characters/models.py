@@ -15,7 +15,7 @@ class Character(models.Model):
     )
 
     name = models.CharField(max_length=50, verbose_name='Character Name')
-    level = models.IntegerField(default=1, verbose_name='Level')
+    level = models.PositiveIntegerField(default=1, verbose_name='Level')
     character_class = models.CharField(max_length=50, verbose_name='Class')
     background = models.TextField(verbose_name='Background', null=True, blank=True)
     player_name = models.CharField(max_length=50, verbose_name='Players Name')
