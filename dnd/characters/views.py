@@ -1,15 +1,41 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Character
+from .forms import CharacterForm
 
 
-class CreateCharacterView(LoginRequiredMixin, CreateView):
-    login_url = reverse_lazy('users:login')
-    model = Character
-    template_name = 'characters/create_character.html'
-    fields = '__all__'
-    success_url = reverse_lazy('characters:create_character')
+# class CreateCharacterView(LoginRequiredMixin, CreateView):
+#     login_url = reverse_lazy('users:login')
+#     model = Character
+#     template_name = 'characters/create_character.html'
+#     fields = [
+#         'name',
+#         'level',
+#         'character_class',
+#         'background',
+#         'player_name',
+#         'race',
+#         'alignment',
+#         'experience_points',
+#     ]
+#     success_url = reverse_lazy('characters:create_character')
+
+@login_required(login_url='users:login')
+def create_character(request):
+    if request.method == 'POST':
+        form = CharacterForm(request.POST)
+        if form.is_valid():
+            user = request.user.id
+            obj = form.save(commit=False)
+            obj.user_id = user
+            obj.save()
+            return redirect('characters:create_character')
+    
+    else:
+        form = CharacterForm()
+
+    return render(request, 'characters/create_character.html', context={'form': form})

@@ -3,5 +3,5 @@ from . import views
 
 app_name = 'characters'
 urlpatterns = [
-    path('create/', views.CreateCharacterView.as_view(), name='create_character'),
+    path('create/', views.create_character, name='create_character'),
 ]
