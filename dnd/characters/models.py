@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Character(models.Model):
@@ -14,6 +15,7 @@ class Character(models.Model):
         ("Tiefling", "Tiefling")
     )
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, verbose_name='Character Name')
     level = models.PositiveIntegerField(default=1, verbose_name='Level')
     character_class = models.CharField(max_length=50, verbose_name='Class')
