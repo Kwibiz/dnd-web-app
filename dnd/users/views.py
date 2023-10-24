@@ -4,12 +4,19 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 
-# Create your views here.
+from characters.models import Character
+
 
 @login_required(login_url='users:login')
-def users_main(request):
-    user = request.user.username
-    return render(request, 'users/users_main.html', context={'user': user})
+def profile(request):
+    user_username = request.user.username
+    user_id = request.user.id
+    characters = Character.objects.filter(user_id=user_id)
+    return render(request, 'users/profile.html', 
+                  context={
+                      'user': user_username, 
+                      'characters': characters
+                      })
 
 
 def sign_up(request):

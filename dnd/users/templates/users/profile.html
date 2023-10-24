@@ -10,10 +10,16 @@
 <body>
     {% block body %}
 
-    <h1>USERS MAIN</h1>
     <h2>LOGGED IN AS {{ user }}</h2>
-    
     <a href="{% url 'users:logout' %}">logout</a>
+
+    <h3>Characters:</h3><br>
+    <ul>
+    {% for character in characters %}
+        <li>{{ character.name }}</li>
+    {% endfor %}
+    </ul>
+    <a href="{% url 'characters:create_character' %}">Create character</a>
 
     {% endblock body %}
 </body>
