@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Character(models.Model):
@@ -24,9 +25,13 @@ class Character(models.Model):
     race = models.CharField(choices=RACE_CHOICES, max_length=20, verbose_name='Race')
     alignment = models.CharField(max_length=50, verbose_name='Alignment')
     experience_points = models.PositiveIntegerField(default=0, verbose_name='Experience Points')
+    slug = models.SlugField(null=False, unique=True)
 
     def __str__(self):
         return self.name.capitalize()
+
+    def get_absolute_url(self):
+        return reverse('characters:detailed_character', kwargs={'slug': self.slug})
 
     class Meta:
         constraints = [
