@@ -13,10 +13,10 @@
     <h2>LOGGED IN AS {{ user }}</h2>
     <a href="{% url 'users:logout' %}">logout</a>
 
-    <h3>Characters:</h3><br>
+    <h3>Characters:</h3>
     <ul>
     {% for character in characters %}
-        <li>{{ character.name }}</li>
+        <a href="{% url 'characters:detailed_character' slug=character.slug %}"><li>{{ character.name }}</li></a>
     {% endfor %}
     </ul>
     <a href="{% url 'characters:create_character' %}">Create character</a>
