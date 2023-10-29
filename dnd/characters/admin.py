@@ -10,7 +10,6 @@ class CharacterAdmin(admin.ModelAdmin):
         'name',
         'level', 
         'character_class',
-        'background',
         'player_name',
         'race',
         'alignment',
